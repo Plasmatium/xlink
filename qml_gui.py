@@ -21,6 +21,7 @@ if __name__ == '__main__':
     view.show()
  
     context = view.rootObject()
+    view.rootContext().setContextProperty("mainwindow", view)
     context.sendClicked.connect(run_func)   # 连接QML文件中的sendClicked信号
     context.quit.connect(view.close)
     app.exec_()
