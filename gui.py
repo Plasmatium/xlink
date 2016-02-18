@@ -17,7 +17,7 @@ def drawPic():
         inputEntry.delete(0,END)
         inputEntry.insert(0,'50')     
     #清空图像，以使得前后两次绘制的图像不会重叠
-    set_trace()
+    
     drawPic.f.clf()
     drawPic.a=drawPic.f.add_subplot(111)     
     #在[0,100]范围内随机生成sampleCount个数据点
