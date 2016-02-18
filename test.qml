@@ -1,6 +1,6 @@
 import QtQuick 2.5
 import QtGraphicalEffects 1.0
-//import "Button"
+import "./qml_elements"
 
 Rectangle {
     id: root
@@ -44,19 +44,23 @@ Rectangle {
 	        onPositionChanged: { //鼠标按下后改变位置
 	            mainwindow.x = (mainwindow.x + (mouseX - xMouse))
 	            mainwindow.y = (mainwindow.y + (mouseY - yMouse))
-	            root.log(String(mainwindow.x)+','+String(mainwindow.y))
+	            //root.log(String(mainwindow.x)+','+String(mainwindow.y))
 	        }
 	    }
 
-	    /*/
-    	Button {
+	    //*/
+    	PushButton {
     		id: quitButton
     		width: 40; height: 40
+    		text: "X"
+    		backColor: "white"
+    		textColor: "red"
+    		border.width: 0
+
 	        anchors.topMargin: 1
 	        anchors.rightMargin: 1
 	        anchors.top: parent.top
 	        anchors.right: parent.right
-    		text: "X"
 
     		onClicked: {
     			root.log("quit")
@@ -74,5 +78,11 @@ Rectangle {
 	    	}
 	    }
 	    //*/
+
+	    ContentWindow {
+	    	id: contentWindow
+	    	anchors.fill: parent
+	    	anchors.topMargin: 50
+	    }
     }
 }

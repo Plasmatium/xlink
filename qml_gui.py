@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3.5
+
 from PyQt5.QtCore import QUrl, Qt
 from PyQt5.QtGui import QGuiApplication, QColor
 from PyQt5.QtQuick import QQuickView
@@ -11,8 +13,8 @@ def run_func(string):
  
  
 if __name__ == '__main__':
-    # path = r'test\main.qml'
-    path = 'test.qml'
+    path = r'test.qml'
+    # path = './qml_elements/ContentWindow.qml'
  
     app = QGuiApplication([])
     a = app
