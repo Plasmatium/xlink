@@ -30,6 +30,6 @@ Button {
         }
     }
     Behavior on backColor { ColorAnimation{ duration: 150
-	            easing.type: easing.OutExpo
+	            //easing.type: easing.OutExpo
 	            } }
 }

@@ -15,6 +15,7 @@ Rectangle {
     property int yMouse         //存储鼠标y坐标
     signal log(string str1) // 定义信号
     signal quit()
+    signal getDataFromPython(var item, string prpty)
 
     layer.enabled: true
     layer.effect: DropShadow {
@@ -27,24 +28,28 @@ Rectangle {
 
     Rectangle {
     	id: mainWindow
-    	width: root.width-30
-    	height: root.height-30
+    	anchors.fill: parent
+    	anchors.margins: 30
+    	//width: root.width-30
+    	//height: root.height-30
     	color: 'white'
-    	anchors.centerIn: parent
 
     	//拖动窗口
 	    MouseArea {
 	        anchors.fill: parent
 	        acceptedButtons: Qt.LeftButton //只处理鼠标左键
+	        //hoverEnabled : true
+	        property var pX
+	        property var pY
+
 	        onPressed: { //接收鼠标按下事件
-	            xMouse = mouseX
-	            yMouse = mouseY
-	            root.log("asdf")
+	        	pX = mouseX
+	        	pY = mouseY
+	            console.log("pressed: ", pX, pY)
 	        }
 	        onPositionChanged: { //鼠标按下后改变位置
-	            mainwindow.x = (mainwindow.x + (mouseX - xMouse))
-	            mainwindow.y = (mainwindow.y + (mouseY - yMouse))
-	            //root.log(String(mainwindow.x)+','+String(mainwindow.y))
+	        	mainwindow.x += mouseX - pX
+	        	mainwindow.y += mouseY - pY
 	        }
 	    }
 
@@ -69,20 +74,20 @@ Rectangle {
     	}
     	//*/
 
-    	//*/
-	    CheckButton {
-	    	anchors.centerIn: parent
-	    	checked: true
-	    	onClicked: {
-	    		text = "Stop"
-	    	}
-	    }
-	    //*/
-
 	    ContentWindow {
 	    	id: contentWindow
 	    	anchors.fill: parent
 	    	anchors.topMargin: 50
+	    }
+
+	    CheckButton {
+	    	anchors.centerIn: parent
+	    	property string str
+	    	checked: true
+	    	onClicked: {
+	    		text = "Stop"
+	    		getDataFromPython(contentWindow.pd_view, "text")
+	    	}
 	    }
     }
 }

@@ -6,30 +6,38 @@ Rectangle {
 	color: "#00000000"
 
 	property real sepRatio: 0.3
+	property alias pd_view: pdView
 
+	SepBar {
+		id: sep
+		length: root.height - 20
+		x: root.width*sepRatio
+
+	}
 
 	Rectangle {
 		id: sideBar
 		height: root.height
 		anchors.left: root.left
-		width: sep.sepPos - 3
-		border.width: 1
+		anchors.right: sep.left
+		//border.width: 1
+		//color: "#3f3f3f"
+
 	}		
 
-	SepBar {
-		id: sep
-		length: root.height - 20
-		sepPos: root.width*0.3
-		anchors.left: sideBar.right
-
-	}
 
 	Rectangle {
 		id: content
-		height: root.height
+		height: root.height/1.618
 		anchors.right: root.right
 		anchors.left: sep.right
-		border.width: 1
+		//border.width: 1
+
+		
+		PandasView {
+			id: pdView
+			anchors.fill: parent
+		}
 	}	
 
 }
