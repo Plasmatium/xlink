@@ -24,7 +24,7 @@ Flickable {
 
 	TextEdit {
 		id: pandasText
-		color: "#c2c2b4"		
+		color: "#bebe90"		
 		x: root.x + 15
 		y: root.y + 15
 		//width: root.width

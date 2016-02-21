@@ -1,30 +1,23 @@
 #!/usr/local/bin/python3.5
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
-from PyQt5.QtCore import Qt, QObject, pyqtSlot
-from PyQt5.QtQml import QJSValue
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
+from PyQt5 import QtQml
+from PyQt5 import QtQuick
+from PyQt5.QtCore import Qt
 
 import numpy as np
 import pandas as pd
 from numpy.random import random
-from time import time
 
-from ipdb import set_trace
+from IPython.core.debugger import Tracer; set_trace=Tracer()
 from time import sleep
-
+ 
 import mpl
-import testdata as td
 
 _view = None
 _tmp = None
-
-def _initFigure(width, height):
-    set_trace()
-    fig = mpl.fig
-    dpi = fig.get_dpi()
-    fig.set_figwidth(width*dpi)
-    fig.set_figheight(height*dpi)
-
 
 def pd_test(d1, d2):
     li = [[random() for x in range(d2)] for y in range(d1)]
@@ -46,9 +39,7 @@ def _getDataFromPython(item, param):    # todo: item, prpty, data
         rslt = func()
     else:
         rslt = func(*argv)
-
-    if item == None:
-        return        
+        
     if not item.setProperty(prpty, rslt):
         print('set property failed')
         print('\tsaparam: ',p, '\n\tresult: ', str(rslt)[0:100]+'\n...')
@@ -60,30 +51,22 @@ class MainGui(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.app = QtGui.QGuiApplication(["ImageProvider"])
         self.view = QtQuick.QQuickView()
-        self.context = self.view.rootContext()
-        self.py = PQExchange()
-        self.context.setContextProperty("py", self.py)
-
-
-
-        engine = self.context.engine()
-        engine.quit.connect(self.app.quit)
-        self.image_provider = ImageProvider()
-        engine.addImageProvider("chart", self.image_provider)
-        self.view.setSource(QtCore.QUrl("test.qml"))
-
-        #self.view.setResizeMode(QtQuick.QQuickView.SizeRootObjectToView)
+        self.view.setResizeMode(QtQuick.QQuickView.SizeRootObjectToView)
         self.view.setColor(QtGui.QColor(Qt.transparent))
         self.view.setFlags(Qt.Window|Qt.FramelessWindowHint)
 
+        self.context = self.view.rootContext()
         self.context.setContextProperty("mainwindow", self.view)
 
         self.rootObj = self.view.rootObject()
         self.rootObj.log.connect(_log)
         self.rootObj.quit.connect(self.view.close)
         self.rootObj.getDataFromPython.connect(_getDataFromPython)
-        self.rootObj.initFigure.connect(_initFigure)
 
+        self.view.setSource(QtCore.QUrl("test.qml"))
+        engine = self.context.engine()
+        self.image_provider = ImageProvider()
+        engine.addImageProvider("chart", self.image_provider)
 
         self.view.show()
         self.app.exec_()
@@ -93,42 +76,13 @@ class ImageProvider(QtQuick.QQuickImageProvider):
         QtQuick.QQuickImageProvider.__init__(self, QtQuick.QQuickImageProvider.Pixmap)
 
     def requestPixmap(self, id, size):
-        #set_trace()
         #pixmap = QtGui.QPixmap(100, 100)
         #pixmap.fill(QtGui.QColor(id))
-
-        t = time()
         pixmap = QtGui.QPixmap()
-        img = mpl.getImageData(td.data)
-        pixmap.loadFromData(img)
-        print('****', time()-t)
-
+        pixmap.loadFromData(mpl.data)
         return pixmap, QtCore.QSize(800, 600)
 
-class PQExchange(QObject):
-    @pyqtSlot(int, result=str)
-    def plus10(self, value):
-        return str(value+10)
 
-    @pyqtSlot(float, float)
-    def initFigure(self, width, height):
-        #set_trace()
-        fig = mpl.fig
-        dpi = fig.get_dpi()
-        fig.set_figwidth(width/dpi)
-        fig.set_figheight(height/dpi)
-
-    @pyqtSlot(QJSValue)
-    def updateImgParam(self, param):
-        #set_trace()
-        p = param.toVariant()
-        iw = p.get('iw')
-        ih = p.get('ih')
-        dataID = p.get('dataID')
-        td.data = dataID
-
-        self.initFigure(iw, ih)
-        mpl.overlayTrig = p.get('bOverlay')
 ############################################################################## 
 
 MainGui()

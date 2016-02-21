@@ -2,16 +2,18 @@ import QtQuick 2.5
 
 Rectangle {
 	id: root
-	width: 1
-	height: 600
+	width: 10
+	height: parent.height*0.8
 	property alias length: root.height
+	signal positionChanged
 	//border.width: 1
 
-	gradient: Gradient {
-		GradientStop { position: 0.0; color: "#00000000" }
-		GradientStop { position: 0.025; color: "lightgray" }
-		GradientStop { position: 0.975; color: "lightgray" }
-		GradientStop { position: 1.0; color: "#00000000" }
+	Rectangle {
+		id: bar
+		width: parent.width/10
+		height: parent.height
+		anchors.centerIn: parent
+		color: "lightgrey"
 	}
 	MouseArea {
 		anchors.fill: parent
@@ -22,6 +24,8 @@ Rectangle {
 		drag.axis: Drag.XAxis
 		drag.maximumX: root.parent.width/4*3
 		drag.minimumX: root.parent.width/4
+		onPositionChanged: {
+			//console.log('changed')
+		}
 	}
-
 }

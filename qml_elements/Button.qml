@@ -16,13 +16,10 @@ Rectangle {
     Text {
         id: label
         anchors.centerIn: parent
-        text: "Start"
+        text: "Button"
         color: "blue"
     }
     MouseArea {
         anchors.fill: parent
-        onClicked: {
-            root.clicked()
-        }
     }
 }

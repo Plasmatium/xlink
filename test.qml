@@ -1,11 +1,13 @@
 import QtQuick 2.5
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.2
 import "./qml_elements"
 
 Rectangle {
     id: root
-    width: 1600
-    height: 900
+    //adapt with screen
+    width: Screen.desktopAvailableWidth/1.2
+    height: Screen.desktopAvailableHeight/1.2
 
     color: "#00000000"
 
@@ -13,9 +15,14 @@ Rectangle {
     property int rootY    //存储窗口y坐标
     property int xMouse         //存储鼠标x坐标
     property int yMouse         //存储鼠标y坐标
-    signal log(string str1) // 定义信号
+    property int imgCount: 0
+    property var superRoot: root
+
+    signal log(var str1) // 定义信号
     signal quit()
-    signal getDataFromPython(var item, string prpty)
+    // param: type is dict, contains property to set, callback func, argv
+    signal getDataFromPython(var item, var param)
+    signal initFigure(real width, real height)
 
     layer.enabled: true
     layer.effect: DropShadow {
@@ -29,9 +36,7 @@ Rectangle {
     Rectangle {
     	id: mainWindow
     	anchors.fill: parent
-    	anchors.margins: 30
-    	//width: root.width-30
-    	//height: root.height-30
+    	//anchors.margins: 10
     	color: 'white'
 
     	//拖动窗口
@@ -45,7 +50,6 @@ Rectangle {
 	        onPressed: { //接收鼠标按下事件
 	        	pX = mouseX
 	        	pY = mouseY
-	            console.log("pressed: ", pX, pY)
 	        }
 	        onPositionChanged: { //鼠标按下后改变位置
 	        	mainwindow.x += mouseX - pX
@@ -56,7 +60,7 @@ Rectangle {
 	    //*/
     	PushButton {
     		id: quitButton
-    		width: 40; height: 40
+    		width: 64; height: 40
     		text: "X"
     		backColor: "white"
     		textColor: "red"
@@ -77,17 +81,63 @@ Rectangle {
 	    ContentWindow {
 	    	id: contentWindow
 	    	anchors.fill: parent
-	    	anchors.topMargin: 50
+	    	anchors.topMargin: 80
+	    	border.width: 1
 	    }
 
+	    //checkbutton for test
 	    CheckButton {
-	    	anchors.centerIn: parent
-	    	property string str
+	    	//checked: true
+	    	width: 64
+	    	height: 40
+	    	text: "Go!"
 	    	checked: true
+	    	border.width: 0
 	    	onClicked: {
-	    		text = "Stop"
-	    		getDataFromPython(contentWindow.pd_view, "text")
+	    		if(checked) text="Up"
+	    		else text="Go!"
+	    		console.log("out pressed----------")
+
+				var param = {
+					"bOverlay": contentWindow.chartView.bOverlay,
+					"dataID": imgCount>3?null:309,
+					"iw": contentWindow.chartView.iw,
+					"ih": contentWindow.chartView.ih,
+				}
+	    		refreshImage(param)
 	    	}
+
+
 	    }
+
+	    SelectButton {
+	    	id: menu
+	    	captionList: ['Configuration', 'Chart', 'Running']
+	    	//captionList: ["1","2","3"]
+	    	selectionList: [true, false]
+	    	anchors.horizontalCenter: parent.horizontalCenter
+	    	anchors.topMargin: 36.44
+	    	anchors.top: parent.top
+	    }	
     }
+
+    Component.onCompleted: {
+    	console.log('init_figure now...')
+    	var x = py.plus10(200)
+    	console.log(x)
+    	var cv = contentWindow.chartView
+    	py.initFigure(cv.iw, cv.ih)
+
+    	contentWindow.py = py
+    	console.log(superRoot, root)
+    	//root.log('print')
+		//root.initFigure(cv.width, cv.height)
+	}
+
+	function refreshImage(param) {
+		console.log(param)
+		py.updateImgParam(param)
+		contentWindow.chartView.source = 'image://chart/'+ imgCount++
+		
+	}
 }

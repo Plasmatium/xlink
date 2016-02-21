@@ -5,8 +5,10 @@ Rectangle {
 	width: 100; height: 100
 	color: "#00000000"
 
-	property real sepRatio: 0.3
-	property alias pd_view: pdView
+	property real sepRatio: 0.382
+	property alias chartView: chartView
+	property var py: parent.py
+	//property var superRoot: parent.parent.superRoot
 
 	SepBar {
 		id: sep
@@ -26,18 +28,23 @@ Rectangle {
 	}		
 
 
-	Rectangle {
-		id: content
-		height: root.height/1.618
+	ChartView {
+		id: chartView
+		height: root.height
 		anchors.right: root.right
 		anchors.left: sep.right
 		//border.width: 1
+	}
 
-		
-		PandasView {
-			id: pdView
-			anchors.fill: parent
-		}
-	}	
+	Component.onCompleted: {
 
+	}
 }
+/*}
+
+	ChartView {
+		id: chartView
+		anchors.left: sideBar.right
+		anchors.right: root.right
+	}
+*/
