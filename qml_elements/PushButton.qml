@@ -27,6 +27,14 @@ Button {
         onExited: {
             backColor = bColor
             textColor = fColor
+        }        
+        onPressed: {
+            backColor = Qt.lighter(fColor, 1.2)
+            textColor = Qt.darker(bColor, 1.2)
+        }
+        onReleased: {
+            backColor = bColor
+            textColor = fColor
         }
     }
     Behavior on backColor { ColorAnimation{ duration: 150

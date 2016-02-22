@@ -2,7 +2,7 @@ import matplotlib, io
 from PIL import Image
 import numpy as np
 from time import time
-from ipdb import set_trace
+from pdb import set_trace
 
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -13,6 +13,7 @@ overlayTrig = True
 
 imgdata = io.BytesIO()
 fig.savefig(imgdata, format='jpg')
+fig.subplotpars.update(left=0.1, right=0.9, top=0.9, bottom=0.1)
 
 imgdata.seek(0)
 data = imgdata.read()
@@ -37,3 +38,9 @@ def getImageData(data=None):
 
 	imgdata.seek(0)
 	return imgdata.read()
+
+def showIpyFig(_fig):
+	imgdata = io.BytesIO()
+	_fig.savefig(imgdata, format='tiff')
+	imgdata.seek(0)
+	return Image.open(imgdata)

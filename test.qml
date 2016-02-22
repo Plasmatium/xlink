@@ -72,8 +72,8 @@ Rectangle {
 	        anchors.right: parent.right
 
     		onClicked: {
-    			root.log("quit")
-    			root.quit()
+    			py.log("quit")
+    			mainwindow.close()
     		}
     	}
     	//*/
