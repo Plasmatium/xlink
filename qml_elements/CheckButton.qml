@@ -7,6 +7,8 @@ Button {
     property var dcolor: "#ff3998d6"
     property bool checked: false
     property bool flipable: true
+    property string checkedText: 'Checked'
+    property string uncheckedText: 'Unchecked'
  
     backColor: lcolor
     textColor: dcolor
@@ -24,6 +26,9 @@ Button {
  
     Component.onCompleted: {
         setColor()
+        if(flipable){
+            text = checked ? checkedText : uncheckedText
+        }
     }
 
     MouseArea {
@@ -31,9 +36,11 @@ Button {
         hoverEnabled: true
         onClicked: {
             root.clicked()
-            if(flipable) { checked = !checked }
+            if(flipable) {
+                checked = !checked
+                text = checked ? checkedText : uncheckedText
+            }
             setColor()
-            console.log("check pressed", checked)
         }
         onEntered: {
         	if(checked) {backColor = Qt.lighter(dcolor,1.2)}

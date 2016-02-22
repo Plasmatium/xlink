@@ -11,7 +11,7 @@ sin = np.sin
 def rdm():
 	return (random.random()/0.5-0.5)**5
 def rdmX():
-	x = np.arange(-2*np.pi*rdm(), 2*np.pi*rdm(), 1e-3)
+	x = np.arange(-2*np.pi*random.random()**2*10, 2*np.pi*random.random()**2*10, 1e-3)
 	return x
 
 def makeSineData():

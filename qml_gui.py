@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python3.5
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
@@ -6,6 +6,7 @@ from PyQt5.QtQml import QJSValue
 
 import numpy as np
 import pandas as pd
+import io
 from numpy.random import random
 from time import time
 
@@ -91,18 +92,23 @@ class ImageProvider(QtQuick.QQuickImageProvider):
     def __init__(self):
         QtQuick.QQuickImageProvider.__init__(self, QtQuick.QQuickImageProvider.Pixmap)
 
-    def requestPixmap(self, id, size):
-        #set_trace()
-        #pixmap = QtGui.QPixmap(100, 100)
-        #pixmap.fill(QtGui.QColor(id))
+    def requestPixmap(self, ID, size):
+        param = ID.split(':')
+        prefix = param[0]
+        argv = param[1]
 
-        t = time()
+        switch = {
+        'zoom': mpl.zoom,
+        'new': mpl.new,
+        'drag': mpl.drag,
+        }
+
         pixmap = QtGui.QPixmap()
-        img = mpl.getImageData(td.data)
+        img = switch[prefix](argv)
         pixmap.loadFromData(img)
-        print('****', time()-t)
 
         return pixmap, QtCore.QSize(800, 600)
+
 
 class PQExchange(QObject):
     @pyqtSlot(int, result=str)
@@ -136,19 +142,13 @@ class PQExchange(QObject):
 
     @pyqtSlot(float, float, result=QVariant)
     def getXValue(self, mouseX, width):
-        fig = mpl.fig
-        rslt = []
-        #set_trace()
-        for ax in fig.axes:
-            xax = ax.xaxis
-            rg = xax.get_view_interval()
-            pix = mouseX-width*0.1
-            ratio = pix/(width*0.8)
-            x = rg[0]+ratio*(rg[1]-rg[0])
-            rslt.append([float(x)])
-
+        rslt = mpl.getXValue(mouseX, width)
         return QVariant(rslt)
 
+    @pyqtSlot(str)
+    def saveFig(self, path):
+        fn = path+hex(hash(time()))[2:]+'.pdf'
+        mpl.fig.savefig(fn, format='pdf')
 
 
 ############################################################################## 

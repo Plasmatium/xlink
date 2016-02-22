@@ -30,24 +30,40 @@ Rectangle {
 
 		MouseArea {
 			anchors.fill: parent
+			property real lastX
+			property real delayCount: 0
 			hoverEnabled: true
 		    onWheel: {
 		        if (wheel.modifiers & Qt.ControlModifier) {
 		        	var yy = wheel.angleDelta.y
-		            if (yy > 0)
-		                py.log(["zoomIn", yy]);
-		            else
-		                py.log(["zoomOut", yy])
+		            if (yy > 0) {
+		                //py.log(["zoomIn", yy]);
+		        		source = "image://chart/zoom:direction=" +'in,'
+		        		+ 'ID=' + imgCount--
+		            }
+		            else {
+		                //py.log(["zoomOut", yy])
+		        		source = "image://chart/zoom:direction=" +'out,'
+		        		+ 'ID=' + imgCount--
+		        	}
 		        }
-		        source = "image://chart/" + 4
 		    }
 
 		    onPositionChanged: {
 		    	crossH.y = mouseY
 		    	crossV.x = mouseX
-		        py.log(mouseX)
 		        var rslt = py.getXValue(mouseX, width)
-		        console.log(rslt)
+
+		        var mod = (delayCount++)%10
+		        if(pressed && mod==0){
+		        	var deltaX = mouseX - lastX
+		        	source = "image://chart/drag:deltaX="+deltaX+','
+		        	+'ID='+imgCount--
+		        	lastX = mouseX
+		        }
+		        else {
+		        	lastX = mouseX
+		        }
 		    }
 		    onEntered: {
 		    	crossH.color = "#ff3998d6"
@@ -110,6 +126,8 @@ Rectangle {
 
 			CheckButton {
 				id: overlay
+				checkedText: "Overlay"
+				uncheckedText: "Override"
 			}
 
 			PushButton {
@@ -133,7 +151,11 @@ Rectangle {
 			}
 
 			PushButton {
-				id: b6
+				id: saveFig
+				text: "Save Figures"
+				onClicked: {
+					py.saveFig('./figures/')
+				}
 			}
 		}
 	}

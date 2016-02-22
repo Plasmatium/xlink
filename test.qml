@@ -90,12 +90,11 @@ Rectangle {
 	    	//checked: true
 	    	width: 64
 	    	height: 40
-	    	text: "Go!"
+	    	checkedText: "Go!"
+	    	uncheckedText: "Up..."
 	    	checked: true
 	    	border.width: 0
 	    	onClicked: {
-	    		if(checked) text="Up"
-	    		else text="Go!"
 	    		console.log("out pressed----------")
 
 				var param = {
@@ -129,15 +128,14 @@ Rectangle {
     	py.initFigure(cv.iw, cv.ih)
 
     	contentWindow.py = py
-    	console.log(superRoot, root)
     	//root.log('print')
 		//root.initFigure(cv.width, cv.height)
 	}
 
 	function refreshImage(param) {
-		console.log(param)
 		py.updateImgParam(param)
-		contentWindow.chartView.source = 'image://chart/'+ imgCount++
+		var chartView = contentWindow.chartView
+		chartView.source = 'image://chart/new:ID='+ imgCount++
 		
 	}
 }
