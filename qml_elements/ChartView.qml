@@ -54,7 +54,7 @@ Rectangle {
 		    	crossV.x = mouseX
 		        var rslt = py.getXValue(mouseX, width)
 
-		        var mod = (delayCount++)%5
+		        var mod = (delayCount++)%20
 		        if(pressed){
 		        	if(mod==0){
 			        	var deltaX = mouseX - lastX

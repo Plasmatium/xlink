@@ -1,5 +1,4 @@
-#!/usr/local/bin/python3
-
+#!/usr/local/bin/python3.5
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
 from PyQt5.QtQml import QJSValue
