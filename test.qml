@@ -82,7 +82,7 @@ Rectangle {
 	    	id: contentWindow
 	    	anchors.fill: parent
 	    	anchors.topMargin: 80
-	    	border.width: 1
+	    	//border.width: 1
 	    }
 
 	    //checkbutton for test
@@ -111,7 +111,7 @@ Rectangle {
 
 	    SelectButton {
 	    	id: menu
-	    	captionList: ['Configuration', 'Chart', 'Running']
+	    	captionList: ['Chart', 'Running', 'Configuration']
 	    	//captionList: ["1","2","3"]
 	    	selectionList: [true, false]
 	    	anchors.horizontalCenter: parent.horizontalCenter

@@ -54,12 +54,14 @@ Rectangle {
 		    	crossV.x = mouseX
 		        var rslt = py.getXValue(mouseX, width)
 
-		        var mod = (delayCount++)%10
-		        if(pressed && mod==0){
-		        	var deltaX = mouseX - lastX
-		        	source = "image://chart/drag:deltaX="+deltaX+','
-		        	+'ID='+imgCount--
-		        	lastX = mouseX
+		        var mod = (delayCount++)%5
+		        if(pressed){
+		        	if(mod==0){
+			        	var deltaX = mouseX - lastX
+			        	source = "image://chart/drag:deltaX="+deltaX+','
+			        	+'ID='+imgCount--
+			        	lastX = mouseX
+			        }
 		        }
 		        else {
 		        	lastX = mouseX

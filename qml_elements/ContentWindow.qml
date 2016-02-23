@@ -12,18 +12,17 @@ Rectangle {
 
 	SepBar {
 		id: sep
-		length: root.height - 20
+		vertical: true
 		x: root.width*sepRatio
 
 	}
 
-	Rectangle {
+	SideView {
 		id: sideBar
 		height: root.height
 		anchors.left: root.left
 		anchors.right: sep.left
 		//border.width: 1
-		//color: "#3f3f3f"
 
 	}		
 

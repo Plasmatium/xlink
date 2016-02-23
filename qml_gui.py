@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.5
+#!/usr/local/bin/python3
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
@@ -15,6 +15,7 @@ from time import sleep
 
 import mpl
 import testdata as td
+import tcp_sr as ts
 
 _view = None
 _tmp = None
@@ -150,6 +151,9 @@ class PQExchange(QObject):
         fn = path+hex(hash(time()))[2:]+'.pdf'
         mpl.fig.savefig(fn, format='pdf')
 
+    @pyqtSlot(result=str)
+    def refreshConfigInfo(self):
+        return ts.showConfigInfo()
 
 ############################################################################## 
 
