@@ -1,7 +1,7 @@
-#!/usr/local/bin/python3.5
+#!/usr/local/bin/python3
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
-from PyQt5.QtQml import QJSValue
+from PyQt5.QtQml import QJSValue, QJSEngine
 
 import numpy as np
 import pandas as pd
@@ -18,9 +18,13 @@ import tcp_sr as ts
 
 _view = None
 _tmp = None
+jeg = QJSEngine()
+
+def pd2qv(df):
+    data = df.T.to_dict()
+    return QVariant(data)
 
 def _initFigure(width, height):
-    set_trace()
     fig = mpl.fig
     dpi = fig.get_dpi()
     fig.set_figwidth(width*dpi)
@@ -111,6 +115,11 @@ class ImageProvider(QtQuick.QQuickImageProvider):
 
 
 class PQExchange(QObject):
+    @pyqtSlot(str, result=QVariant)
+    def getDataFrame(self, fn):
+        df = ts.loadc(fn)
+        return pd2qv(df)
+
     @pyqtSlot(int, result=str)
     def plus10(self, value):
         return str(value+10)

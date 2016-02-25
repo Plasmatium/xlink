@@ -106,13 +106,6 @@ Rectangle {
 		}
 	}
 
-	PandasView {
-		id: pdView
-		width: root.width
-		height: root.height*0.618
-		z: 0
-	}
-
 	Rectangle {
 		id: buttonGrid
 		width: root.width
