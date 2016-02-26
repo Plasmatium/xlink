@@ -7,7 +7,7 @@ Rectangle {
     id: root
     //adapt with screen
     width: Screen.desktopAvailableWidth/1.2
-    height: Screen.desktopAvailableHeight/1.2
+    height: width*0.6
 
     color: "#00000000"
 

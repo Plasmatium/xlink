@@ -18,6 +18,7 @@ Rectangle {
         anchors.centerIn: parent
         text: "Button"
         color: "blue"
+        font.pixelSize: 18
     }
     MouseArea {
         anchors.fill: parent
