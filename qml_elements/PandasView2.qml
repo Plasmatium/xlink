@@ -9,6 +9,7 @@ Rectangle {
     property alias mod: mod
     property var fn
     property alias currentIndex: view.currentIndex
+    property alias currentItem: view.currentItem
     property var modData
     //color: '#3f3f3f'
 
@@ -29,7 +30,6 @@ Rectangle {
             property var epTxtColor: selected?'#ff3998d6':'#ff3998d6'
             property var normTxtColor: selected?'white':'#00000000'
             property var sn: model['SN']
-            property var mod: model
             width: root.parent.width; height: selected?100:38.2
             Column {
                 Text { text: '--<b>SN</b>: ' + SN; color: epTxtColor}

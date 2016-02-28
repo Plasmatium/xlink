@@ -29,12 +29,12 @@ Button {
             textColor = fColor
         }        
         onPressed: {
-            backColor = Qt.lighter(fColor, 1.2)
-            textColor = Qt.darker(bColor, 1.2)
+            backColor = "#ffd69839"
+            textColor = bColor
         }
         onReleased: {
-            backColor = bColor
-            textColor = fColor
+            backColor = fColor
+            textColor = bColor
         }
     }
     Behavior on backColor { ColorAnimation{ duration: 150

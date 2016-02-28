@@ -26,7 +26,7 @@ Rectangle {
 
     layer.enabled: true
     layer.effect: DropShadow {
-        radius: 15
+        radius: 16
         samples: radius * 2
         source: root
         color: "#aa000000"

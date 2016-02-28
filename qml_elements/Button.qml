@@ -7,6 +7,7 @@ Rectangle {
     property alias textColor: label.color
     property alias backColor: root.color
     property bool checked: false
+    property alias font: label.font
     signal clicked
  
     width: 116; height: 26
@@ -18,7 +19,7 @@ Rectangle {
         anchors.centerIn: parent
         text: "Button"
         color: "blue"
-        font.pixelSize: 18
+        font.pixelSize: 16
     }
     MouseArea {
         anchors.fill: parent

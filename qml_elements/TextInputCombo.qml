@@ -5,6 +5,7 @@ Rectangle {
 	property var py: parent.py
 	property alias labelText: label.text
 	property alias inputText: input.text
+	property alias readOnly: input.readOnly
 
 	property var fcolor: 'white'
 	property var bcolor: '#ff3998d6'
@@ -43,6 +44,9 @@ Rectangle {
 			id: input
 			text: 'input'
 			color: fcolor
+			selectByMouse: true
+			selectionColor: "#ffd69839"
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			font.pixelSize: 16
 		}
 	}

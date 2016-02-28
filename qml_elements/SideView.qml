@@ -42,6 +42,7 @@ Rectangle {
 			}
 			TextInputCombo {
 				id: inputSN
+				readOnly: true
 				labelText: '<b>SN</b>'
 				inputText: inputArray.sel?configList.mod.get(configList.currentIndex)['SN']:'...'
 			}
@@ -80,33 +81,38 @@ Rectangle {
 			height: 40
 			width: 40
 			radius: 20
+			font.pixelSize: 18
 			text: '√'
 
 			onClicked: {
 				if(!inputArray.sel){
 					return
 				}
-				var m = configList.mod
 				var idx = configList.currentIndex
-				m.set(idx, {
-					'SN': inputSN.inputText,
-					'IP': inputIP.inputText,
-					'Port': inputPort.inputText,
-					'Regs': inputRegs.inputText,
-					'Chs': inputChs.inputText,
-					'Desc': inputDesc.inputText
-					} )
+				var itm = configList.currentItem
+				console.log(itm)
+				var sn = inputSN.inputText
+				configList.pd[sn] = {'SN': sn}
+				var df = configList.pd[sn]
+				df.IP = inputIP.inputText
+				df.Regs = inputRegs.inputText
+				df.Port = inputPort.inputText
+				df.Chs = inputChs.inputText
+				df.Desc = inputDesc.inputText
+
+				py.saveConfig(configList.pd)
 				//ToDo py.saveConfig
 			}
 		}		
 		PushButton {
-			id: draw
+			id: addConfig
 			x: sideInfo.width*0.618-20
 			y: sideInfo.height-75
 			height: 40
 			width: 40
 			radius: 20
-			text: '->'//'→'
+			font.pixelSize: 22
+			text: '+'
 		}
 	}
 

@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python3.5
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
 from PyQt5.QtQml import QJSValue, QJSEngine
@@ -16,8 +16,8 @@ import mpl
 import testdata as td
 import tcp_sr as ts
 
-_view = None
-_tmp = None
+_view = 1
+_tmp = 1
 jeg = QJSEngine()
 
 def pd2qv(df):
@@ -115,10 +115,18 @@ class ImageProvider(QtQuick.QQuickImageProvider):
 
 
 class PQExchange(QObject):
+    @pyqtSlot(QVariant, result=str)
+    def saveConfig(self, var_dict):
+        df = pd.DataFrame(var_dict.toVariant()).T
+        df.index = df['SN']
+        del df['SN']
+        ts.dumpc('config.cdt', df)
+        return 'test'
+
     @pyqtSlot(str, result=QVariant)
     def getDataFrame(self, fn):
         df = ts.loadc(fn)
-        return pd2qv(df)
+        return pd2qv(df.sort_index())
 
     @pyqtSlot(int, result=str)
     def plus10(self, value):
