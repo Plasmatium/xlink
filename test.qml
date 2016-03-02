@@ -90,13 +90,11 @@ Rectangle {
 	    	//checked: true
 	    	width: 64
 	    	height: 40
-	    	checkedText: "Go!"
-	    	uncheckedText: "Up..."
-	    	checked: true
+	    	checkedText: "Running"
+	    	uncheckedText: "Idle"
+	    	checked: false
 	    	border.width: 0
 	    	onClicked: {
-	    		console.log("out pressed----------")
-
 				var param = {
 					"bOverlay": contentWindow.chartView.bOverlay,
 					"dataID": imgCount>3?null:309,

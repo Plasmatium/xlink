@@ -42,7 +42,7 @@ Rectangle {
 			}
 			TextInputCombo {
 				id: inputSN
-				readOnly: true
+				//readOnly: true
 				labelText: '<b>SN</b>'
 				inputText: inputArray.sel?configList.mod.get(configList.currentIndex)['SN']:'...'
 			}
@@ -83,6 +83,9 @@ Rectangle {
 			radius: 20
 			font.pixelSize: 18
 			text: '√'
+			border.width:0
+			textColor: 'white'
+			backColor: '#ff3998d6'
 
 			onClicked: {
 				if(!inputArray.sel){
@@ -112,7 +115,10 @@ Rectangle {
 			width: 40
 			radius: 20
 			font.pixelSize: 22
-			text: '+'
+			text: 'x'
+			border.width:0
+			textColor: 'white'
+			backColor: '#ff3998d6'
 		}
 	}
 
@@ -120,5 +126,21 @@ Rectangle {
 		id: sep1
 		vertical: false
 		y: root.height*0.618
+		z:1
+	}
+
+	PicSelector {
+		id: picSelector
+		height: root.height*0.382
+		width: root.width*0.5
+		x: root.width*0.5
+		y: root.height*0.618
+		index: configList.currentIndex
+	}
+	DrawListView {
+		id: drawListView
+		y: root.height*0.618
+		height: root.height*0.382
+		width: root.width*0.5
 	}
 }

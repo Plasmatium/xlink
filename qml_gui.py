@@ -1,16 +1,18 @@
-#!/usr/local/bin/python3.5
+#!/usr/local/bin/python3
 from PyQt5 import QtCore, QtGui, QtWidgets, QtQml, QtQuick
 from PyQt5.QtCore import Qt, QObject, pyqtSlot, QVariant
 from PyQt5.QtQml import QJSValue, QJSEngine
 
 import numpy as np
 import pandas as pd
+import pickle as pk
 import io
 from numpy.random import random
 from time import time
 
 from pdb import set_trace
 from time import sleep
+from hashlib import md5
 
 import mpl
 import testdata as td
@@ -115,6 +117,24 @@ class ImageProvider(QtQuick.QQuickImageProvider):
 
 
 class PQExchange(QObject):
+    def __init__(self):
+        QObject.__init__(self)
+        self.drawConfig = {}
+
+    @pyqtSlot(result=str)
+    def getImgID(self):
+        return md5(pk.dumps(self.drawConfig)).hexdigest()
+
+    @pyqtSlot(str, bool, QVariant, result=str)
+    def submitDrawConfig(self, sn, bAdd, conf):
+        if bAdd:
+            self.drawConfig[sn] = conf.toVariant()
+        elif self.drawConfig.get(sn):
+            del self.drawConfig[sn]
+
+        print(self.drawConfig)
+        return 'submitDrawConfig() called'
+
     @pyqtSlot(QVariant, result=str)
     def saveConfig(self, var_dict):
         df = pd.DataFrame(var_dict.toVariant()).T

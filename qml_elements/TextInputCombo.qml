@@ -6,6 +6,8 @@ Rectangle {
 	property alias labelText: label.text
 	property alias inputText: input.text
 	property alias readOnly: input.readOnly
+	property alias labelWidth: labelR.width
+	property alias inputWidth: inputR.width
 
 	property var fcolor: 'white'
 	property var bcolor: '#ff3998d6'
@@ -15,9 +17,11 @@ Rectangle {
 	color: '#00000000'
 
 	Rectangle {
+		id: labelR
 		width: 50
 		height: 40
 		color: bcolor
+		anchors.verticalCenter: parent.verticalCenter
 		Text {
 			anchors.verticalCenter: parent.verticalCenter
 			x: 5
@@ -29,12 +33,14 @@ Rectangle {
 	}
 
 	Rectangle {
-		border.color: 'white'
+		id: inputR
+		border.color: fcolor
 		color: bcolor
 		width: 270
 		height: 40
 		radius: 3
 		anchors.right: root.right
+		anchors.verticalCenter: parent.verticalCenter
 
 		anchors.rightMargin: 3
 		TextInput {
