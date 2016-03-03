@@ -7,6 +7,7 @@ from pdb import set_trace
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import testdata as td
+import tcp_sr as ts
 
 fig = plt.figure()
 overlayTrig = True
@@ -84,7 +85,13 @@ def getXValue(mouseX, width):
 	return rslt
 
 def new(argv):
-	return getImageData(True)
+	data = ts.loadc('./dat/1fff0b8a.cdt')['ch1']
+	print(data)
+	fig.clear()
+	sp = fig.add_subplot(111)
+	sp.plot(data[0:100])
+
+	return generateImgData()
 
 def showIpyFig(_fig):
 	imgdata = io.BytesIO()

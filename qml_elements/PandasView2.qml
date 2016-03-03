@@ -43,6 +43,8 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     view.currentIndex = index
+
+                    console.log(picSelector)
                 }
                 onDoubleClicked: {
                     console.log(model['SN'])
@@ -67,7 +69,7 @@ Rectangle {
         delegate: delegate
         highlight: hlt
         highlightFollowsCurrentItem: false
-        focus: true
+        //focus: true
     }
 
     ListModel {

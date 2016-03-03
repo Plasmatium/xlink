@@ -148,9 +148,24 @@ class PQExchange(QObject):
         df = ts.loadc(fn)
         return pd2qv(df.sort_index())
 
-    @pyqtSlot(int, result=str)
-    def plus10(self, value):
-        return str(value+10)
+    @pyqtSlot(QJSValue, result=str)
+    def drawRequest(self, figList):
+        #self.drawConfig = figList
+        # todo set a cache
+        imgID = getImgID()
+        for fig in figList.toVariant():      
+            sn = fig.property('sn')
+            begin = fig.property('begin')
+            end = fig.property('end')
+            figNum = fig.property('figNum')
+            channel = fig.property('channel')
+
+            df = ts.loadc('./dat/'+sn+'.cdt')[channel]
+            df = df[(df.index>begin)&(df.index<end)]
+
+
+
+        return str('')
 
     @pyqtSlot(QJSValue)
     def log(self, v):

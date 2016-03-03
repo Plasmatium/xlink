@@ -103,8 +103,6 @@ Rectangle {
 				}
 	    		refreshImage(param)
 	    	}
-
-
 	    }
 
 	    SelectButton {
@@ -119,9 +117,6 @@ Rectangle {
     }
 
     Component.onCompleted: {
-    	console.log('init_figure now...')
-    	var x = py.plus10(200)
-    	console.log(x)
     	var cv = contentWindow.chartView
     	py.initFigure(cv.iw, cv.ih)
 

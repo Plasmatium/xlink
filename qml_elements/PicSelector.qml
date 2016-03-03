@@ -8,10 +8,10 @@ Rectangle {
 	color: 'white'
 
 	TextInputCombo {
-		id: start	
+		id: begin	
 		width: 300
 		labelText: 'Start Time'
-		inputText: '00-00-00 0.0.0'
+		inputText: '16-01-01 0:0:0'
 		labelWidth: 100
 		inputWidth: 200
 		fcolor: '#ff3998d6'
@@ -19,10 +19,10 @@ Rectangle {
 	}
 	TextInputCombo {
 		id: end	
-		anchors.top: start.bottom
+		anchors.top: begin.bottom
 		width: 300
 		labelText: 'End Time'
-		inputText: '10-00-00 0.0.0'
+		inputText: '16-01-02 0:0:0'
 		labelWidth: 100
 		inputWidth: 200
 		fcolor: '#ff3998d6'
@@ -52,7 +52,7 @@ Rectangle {
 	}
 	PushButton {
 		id: delConfig
-		x: addConfig.x+30
+		x: addConfig.x+60
 		anchors.top: channel.bottom
 		height: 40
 		width: 40
@@ -68,9 +68,8 @@ Rectangle {
 			if(configList.currentIndex == -1){
 				return
 			}
-			var sn = configList.mod.get(configList.currentIndex)['SN']
-			var conf = {}
-			py.submitDrawConfig(sn, false, conf)
+			drawListView.removeCurrentData()
+			//py.submitDrawConfig(sn, false, conf)
 		}
 	}
 	PushButton {
@@ -92,13 +91,32 @@ Rectangle {
 			}
 			var sn = configList.mod.get(configList.currentIndex)['SN']
 			var conf = {
-				start: start.inputText,
+				sn: sn,
+				begin: begin.inputText,
 				end: end.inputText,
 				figNum: figNum.inputText,
 				channel: channel.inputText
 			}
-			py.submitDrawConfig(sn, true, conf)
+			drawListView.addData(conf)
+			//py.submitDrawConfig(sn, true, conf)
 		}
 	}
 	/*---------------------------------*/
+	PushButton {
+		id: drawFig
+		x: parent.width*0.618-10
+		border.width: 0
+		height: 200
+		anchors.top: end.bottom
+		text: "=======>\n=======>\n=======>\nDraw Figure!\n=======>\n=======>\n=======>"
+
+		onClicked: {
+			var figList = []
+			var mod = drawListView.mod
+			for(var i = 0; i < mod.count; i++) {
+				figList[i] = mod.get(i)
+			}
+			py.drawRequest(figList)
+		}
+	}
 }
