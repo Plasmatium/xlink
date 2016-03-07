@@ -44,7 +44,7 @@ Rectangle {
                 onClicked: {
                     view.currentIndex = index
 
-                    console.log(picSelector)
+                    //console.log(picSelector)
                 }
                 onDoubleClicked: {
                     console.log(model['SN'])

@@ -119,21 +119,20 @@ class ImageProvider(QtQuick.QQuickImageProvider):
 class PQExchange(QObject):
     def __init__(self):
         QObject.__init__(self)
-        self.drawConfig = {}
 
-    @pyqtSlot(result=str)
     def getImgID(self):
-        return md5(pk.dumps(self.drawConfig)).hexdigest()
+        print(mpl.conf)
+        ID = hex(hash(str(mpl.conf)))
+        return ID
 
-    @pyqtSlot(str, bool, QVariant, result=str)
-    def submitDrawConfig(self, sn, bAdd, conf):
-        if bAdd:
-            self.drawConfig[sn] = conf.toVariant()
-        elif self.drawConfig.get(sn):
-            del self.drawConfig[sn]
-
-        print(self.drawConfig)
+###########################################
+#deprecated################################
+    @pyqtSlot(QVariant, result=str)  
+    def submitDrawConfig(self, conf):
+        global _tmp
+        _tmp = conf
         return 'submitDrawConfig() called'
+###########################################
 
     @pyqtSlot(QVariant, result=str)
     def saveConfig(self, var_dict):
@@ -150,22 +149,17 @@ class PQExchange(QObject):
 
     @pyqtSlot(QJSValue, result=str)
     def drawRequest(self, figList):
-        #self.drawConfig = figList
-        # todo set a cache
-        imgID = getImgID()
-        for fig in figList.toVariant():      
-            sn = fig.property('sn')
-            begin = fig.property('begin')
-            end = fig.property('end')
-            figNum = fig.property('figNum')
-            channel = fig.property('channel')
-
-            df = ts.loadc('./dat/'+sn+'.cdt')[channel]
-            df = df[(df.index>begin)&(df.index<end)]
-
-
-
-        return str('')
+        conf = []
+        key = ['sn', 'begin', 'end', 'figNum', 'channel']
+        for f in figList.toVariant():
+            row = {}
+            for k in key:
+                row[k] = f.property(k)
+            conf.append(row)
+        mpl.conf = conf
+        imgID = self.getImgID()
+        mpl.currentID = imgID
+        return imgID
 
     @pyqtSlot(QJSValue)
     def log(self, v):

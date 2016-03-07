@@ -8,6 +8,11 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import testdata as td
 import tcp_sr as ts
+import pandas as pd
+
+currentID = None
+conf = []
+imgCache = {}
 
 fig = plt.figure()
 overlayTrig = True
@@ -85,13 +90,32 @@ def getXValue(mouseX, width):
 	return rslt
 
 def new(argv):
+	'''
 	data = ts.loadc('./dat/1fff0b8a.cdt')['ch1']
-	print(data)
 	fig.clear()
 	sp = fig.add_subplot(111)
 	sp.plot(data[0:100])
+	'''
+	if currentID in imgCache:
+		print('cached img return', currentID)
+		return imgCache[currentID]
 
-	return generateImgData()
+	df = pd.DataFrame(conf)
+	if df.empty:
+		return
+	m = df.figNum.max()
+	fig.clear()
+	for r in df.iterrows():
+		row = r[1]
+		data = ts.loadc('./dat/'+row.sn+'.cdt')[row.channel]
+		data = data[(data.index>row.begin) & (data.index<row.end)]
+		sp = fig.add_subplot(int(m)*100+10+int(row.figNum))
+		sp.plot(data)
+		sp.grid(True)
+
+	imgData = generateImgData()
+	imgCache[currentID] = imgData
+	return imgData
 
 def showIpyFig(_fig):
 	imgdata = io.BytesIO()

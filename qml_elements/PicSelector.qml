@@ -64,7 +64,7 @@ Rectangle {
 		textColor: '#ff3998d6'
 
 		onClicked: {
-			console.log(drawListView)
+			//console.log(drawListView)
 			if(configList.currentIndex == -1){
 				return
 			}
@@ -98,7 +98,6 @@ Rectangle {
 				channel: channel.inputText
 			}
 			drawListView.addData(conf)
-			//py.submitDrawConfig(sn, true, conf)
 		}
 	}
 	/*---------------------------------*/
@@ -116,7 +115,11 @@ Rectangle {
 			for(var i = 0; i < mod.count; i++) {
 				figList[i] = mod.get(i)
 			}
-			py.drawRequest(figList)
+			var id = py.drawRequest(figList)
+			console.log('---id---',id)
+
+			chartView.source = 'image://chart/new:ID='+id
+
 		}
 	}
 }
